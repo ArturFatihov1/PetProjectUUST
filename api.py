@@ -4,8 +4,8 @@ from todo import todo_router
 
 app = FastAPI(
     title="PetProjectUUST",
-    description="Приложение todo из ПЗ №4 «Маршрутизация в FastAPI»",
-    version="1.0.0",
+    description="CRUD-приложение todo из ПЗ №4-1 «Модели ответов и обработка ошибок»",
+    version="2.0.0",
 )
 
 

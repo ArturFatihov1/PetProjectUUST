@@ -1,22 +1,8 @@
-"""Модели Pydantic для валидации тела запроса (ПЗ №4, раздел 1.3)."""
-
 from pydantic import BaseModel, ConfigDict
 
 
-class Item(BaseModel):
-    """Вложенная модель: описание самой задачи с её статусом."""
-
-    item: str
-    status: str
-
-
 class Todo(BaseModel):
-    """Основная модель задачи.
-
-    FastAPI использует аннотацию `todo: Todo` как схему тела запроса,
-    поэтому в список попадут только поля id и item, а лишние поля
-    будут отброшены, а отсутствующие — вызовут ошибку валидации 422.
-    """
+    """Модель задачи для тела запроса POST /todo (id + item)."""
 
     model_config = ConfigDict(
         json_schema_extra={
@@ -31,8 +17,29 @@ class Todo(BaseModel):
     item: str
 
 
-class NestedTodo(BaseModel):
-    """Пример вложенной модели (ПЗ №4, раздел 1.3.1)."""
+from typing import List
 
-    id: int
-    item: Item
+
+class TodoItem(BaseModel):
+    item: str
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "item": "Read the next chapter of the book"
+            }
+        }
+
+
+class TodoItems(BaseModel):
+    todos: List[TodoItem]
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "todos": [
+                    {"item": "Example schema 1!"},
+                    {"item": "Example schema 2!"}
+                ]
+            }
+        }
