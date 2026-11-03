@@ -17,7 +17,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="Planner",
-    description="Планировщик событий — ПЗ №9 «Подключение к нереляционной базе данных»",
+    description="Планировщик событий: ПЗ №9 «Подключение к нереляционной базе данных»",
     version="3.0.0",
     lifespan=lifespan,
 )
