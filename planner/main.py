@@ -1,13 +1,25 @@
+from contextlib import asynccontextmanager
+
 import uvicorn
 from fastapi import FastAPI
 
+from database.connection import Settings
 from routes.events import event_router
 from routes.users import user_router
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Инициализирует подключение к MongoDB при старте приложения."""
+    await Settings().initialize_database()
+    yield
+
+
 app = FastAPI(
     title="Planner",
-    description="Планировщик событий — ПЗ №6 «Структурирование приложений FastAPI»",
-    version="1.0.0",
+    description="Планировщик событий — ПЗ №9 «Подключение к нереляционной базе данных»",
+    version="3.0.0",
+    lifespan=lifespan,
 )
 
 app.include_router(user_router, prefix="/user")
