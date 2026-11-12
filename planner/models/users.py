@@ -1,11 +1,21 @@
 from typing import List, Optional
 
-from pydantic import BaseModel, ConfigDict, EmailStr
+from pydantic import ConfigDict, EmailStr
+from sqlmodel import JSON, Column, Field, SQLModel
 
 from models.events import Event
 
 
-class User(BaseModel):
+class User(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    email: str = Field(index=True, unique=True)
+    password: str
+    events: List[dict] = Field(default_factory=list, sa_column=Column(JSON))
+
+
+class NewUser(SQLModel):
+    """Тело запроса POST /user/signup."""
+
     email: EmailStr
     password: str
     events: Optional[List[Event]] = []
@@ -21,11 +31,9 @@ class User(BaseModel):
     )
 
 
-class NewUser(User):
-    """Используется при регистрации (наследует User)."""
+class UserSignIn(SQLModel):
+    """Тело запроса POST /user/signin."""
 
-
-class UserSignIn(BaseModel):
     email: EmailStr
     password: str
 
