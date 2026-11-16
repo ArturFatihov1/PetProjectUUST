@@ -1,1 +1,33 @@
-uvicorn api:app --host=0.0.0.0 --port=8000 --reload
+Запуск сервера
+==============
+
+1. Планировщик (ПЗ №9, MongoDB)
+--------------------------------
+Код лежит в папке planner/, запускать нужно ОТТУДА: импорты внутри пакета
+абсолютные (from database.connection import Settings), поэтому из корня
+репозитория `uvicorn planner.main:app` падает с ModuleNotFoundError: No module
+named 'database'.
+
+    cd planner
+    uvicorn main:app --host 0.0.0.0 --port 8080 --reload
+
+или то же самое через точку входа:
+
+    cd planner
+    python main.py
+
+Перед запуском должны быть запущены служба MongoDB и указан DATABASE_URL в
+planner/.env, например:
+
+    DATABASE_URL=mongodb://localhost:27017/planner
+
+Swagger UI: http://localhost:8080/docs
+
+2. Todo-приложение (ПЗ №5, шаблоны Jinja2)
+------------------------------------------
+Это отдельное приложение в корне репозитория (api.py), к планировщику и к базе
+данных отношения не имеет:
+
+    uvicorn api:app --host=0.0.0.0 --port=8000 --reload
+
+http://localhost:8000/

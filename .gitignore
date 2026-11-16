@@ -2,7 +2,7 @@ venv/
 __pycache__/
 *.pyc
 *.pyo
-.planner.db
+planner.db
 store/
 *.egg-info/
 .idea/
