@@ -8,13 +8,31 @@
 `uvicorn planner.main:app` падает с ModuleNotFoundError: No module named
 'database'.
 
+Зависимости стоят в venv/ в корне репозитория (sqlmodel и остальное из
+requirements.txt). Сначала активируйте окружение, иначе `uvicorn` возьмётся из
+глобального Python и упадёт с ModuleNotFoundError: No module named 'sqlmodel':
+
+    cd ..
+    .\venv\Scripts\Activate.ps1
     cd planner
     uvicorn main:app --host 0.0.0.0 --port 8080 --reload
+
+Если PowerShell блокирует активацию скрипта:
+
+    Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+
+Можно и без активации — тем же интерпретатором venv:
+
+    ..\venv\Scripts\python.exe -m uvicorn main:app --host 0.0.0.0 --port 8080 --reload
 
 или то же самое через точку входа:
 
     cd planner
-    python main.py
+    ..\venv\Scripts\python.exe main.py
+
+В PyCharm интерпретатор проекта должен указывать на venv\Scripts\python.exe
+(Settings → Project → Python Interpreter). Тогда терминал IDE активирует venv
+сам, и достаточно короткой команды `uvicorn main:app --port 8080 --reload`.
 
 Файл базы planner.db создаётся автоматически при старте в текущей папке
 (в connection.py путь относительный), поэтому запуск из корня ещё и положит
