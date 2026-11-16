@@ -1,1 +1,36 @@
-uvicorn api:app --host=0.0.0.0 --port=8000 --reload
+Запуск сервера
+==============
+
+1. Планировщик (ПЗ №7, подключение к реляционной базе данных SQLite)
+---------------------------------------------------------------------
+Код лежит в папке planner/, запускать нужно ОТТУДА: импорты внутри пакета
+абсолютные (from database.connection import conn), поэтому из корня репозитория
+`uvicorn planner.main:app` падает с ModuleNotFoundError: No module named
+'database'.
+
+    cd planner
+    uvicorn main:app --host 0.0.0.0 --port 8080 --reload
+
+или то же самое через точку входа:
+
+    cd planner
+    python main.py
+
+Файл базы planner.db создаётся автоматически при старте в текущей папке
+(в connection.py путь относительный), поэтому запуск из корня ещё и положит
+базу не туда.
+
+Перед запуском нужны зависимости из requirements.txt:
+
+    pip install -r requirements.txt
+
+Swagger UI: http://localhost:8080/docs
+
+2. Todo-приложение (ПЗ №5, шаблоны Jinja2)
+------------------------------------------
+Это отдельное приложение в корне репозитория (api.py), к планировщику и к базе
+данных отношения не имеет:
+
+    uvicorn api:app --host=0.0.0.0 --port=8000 --reload
+
+http://localhost:8000/
